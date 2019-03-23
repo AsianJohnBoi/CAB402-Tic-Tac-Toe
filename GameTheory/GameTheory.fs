@@ -11,16 +11,16 @@ namespace QUT
             let rec MiniMax game perspective =
                 NodeCounter.Increment()
 
-                //no more moves then return score
-                if game = 0 then heuristic
-                elif perspective = "Max" then
-                      for i in game do
-                         let value = MiniMax(game + 1, false)
+                // if m is a Move
+                // then None is an Option<Move>,  or Some m is an Option<Move>
+                if gameOver then None, 0
+                else 
+                // maxBy : ('T -> 'U) -> seq<'T> -> 'T
+                // maxBy : ('Move -> 'U) -> seq<'Move> -> 'Move
+                    let score (move : 'Move) = (heuristic game perspective)
+                    
+                    let maxVal = Seq.maxBy score (moveGenerator game)
 
-                 //return a tuple containing the best move and the score
-                 //return None if no further legal moves
-
-                //Check which list is empty. AI player is always going to the get max value
                 raise (System.NotImplementedException("MiniMax")) //remove line
 
             NodeCounter.Reset()
