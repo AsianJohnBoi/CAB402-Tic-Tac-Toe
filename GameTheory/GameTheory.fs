@@ -11,15 +11,46 @@ namespace QUT
             let rec MiniMax game perspective =
                 NodeCounter.Increment()
 
+                if gameOver game then None, 0
+                elif perspective == "Cross" then  //Cross is max and always starts the game
+                     //get player's heuristic score
+                     let score = (heuristic game perspective)
+
+                     //generate moves
+                     let moves = moveGenerator game
+
+                     //get the max value for this player
+                     let maxVal = Seq.maxBy moves
+
+                     //apply the move for the player
+                     let move = applyMove perspective maxVal
+
+                     maxVal score
+
+                else
+                    //get the player's heuristic score
+                    let score = (heuristic game perspective)
+
+                    //generate moves
+                    let moves = moveGenerator game
+
+                    //get the min value for the player
+                    let minVal = Seq.minBy moves
+                    
+                    //apply the move for the player
+                    let move = applyMove perspective minVal
+                    
+                    //return tuple containing the best move and the score associated with this game state
+
+
                 // if m is a Move
                 // then None is an Option<Move>,  or Some m is an Option<Move>
                 if gameOver then None, 0
                 else 
                 // maxBy : ('T -> 'U) -> seq<'T> -> 'T
                 // maxBy : ('Move -> 'U) -> seq<'Move> -> 'Move
-                    let score (move : 'Move) = (heuristic game perspective)
+                    //let score (move : 'Move) = (heuristic game perspective)
                     
-                    let maxVal = Seq.maxBy score (moveGenerator game)
 
                 raise (System.NotImplementedException("MiniMax")) //remove line
 
