@@ -8,37 +8,31 @@ namespace QUT
                              (applyMove: 'Game -> 'Move -> 'Game) 
                              : 'Game -> 'Player -> Option<'Move> * int = //apply a move to a game situation to create a new game situation
             // Basic MiniMax algorithm without using alpha beta pruning
-            let rec MiniMax (game: 'Game) (perspective: 'Player) : Option<'Move> * int =
+            let rec MiniMax (game: 'Game) (perspective: 'Player) = //gets the game and the player (Nought or Cross)
                 NodeCounter.Increment()
 
-                let rec EstablishScore (game : 'Game) (move: 'Move) (isMax: bool) : Option<'Move> * int = 
+                let rec EstablishScore (game : 'Game) (isMax: bool) = 
                     if gameOver game then
-                        let score = heuristic game perspective
-                        (Some move), score
-                    else 
-                        let moves = moveGenerator game
-                        if Seq.isEmpty moves then
-                            None, 0
-                        else
-                            let nextGameStates = Seq.map (applyMove game) moves
-                            let nextGameScores = Seq.map (fun g -> EstablishScore g move (not isMax)) nextGameStates
-                            let bestMove = if isMax then Seq.maxBy snd nextGameScores else Seq.minBy snd nextGameScores
-                            bestMove
-
-                let moves = moveGenerator game
-                if Seq.isEmpty moves then
-                     if gameOver game then
-                        let score = (heuristic game perspective)
+                        let score = heuristic game perspective //the score for the player
                         None, score
-                     else
-                        None, 0
-                else 
-                    let possibilities = Seq.map (fun m -> (m, applyMove game m)) moves
-                    let endGames = Seq.map (fun (m, g) -> EstablishScore g m true) possibilities
-                    let bestMove = Seq.maxBy snd endGames
-                    bestMove
-               
-                //raise (System.NotImplementedException("MiniMax")) //remove line
+                    else 
+                        let moves = moveGenerator game //finds moves, returns a sequence
+                        if Seq.isEmpty moves then
+                            None, 0 //no moves available return 0
+                        else
+                            let nextGameStates = 
+                                moves //uses move sequence
+                                |> Seq.map (fun m -> m, applyMove game m) //returns the moves available and applies the move
+                            let nextGameScores = 
+                                nextGameStates
+                                |> Seq.map (fun (m, g) -> m, EstablishScore g (not isMax)) 
+                            let ngs = 
+                                nextGameScores
+                                |> Seq.map (fun (m, r) -> m, snd r)
+                            let bestMove = if isMax then Seq.maxBy snd ngs else Seq.minBy snd ngs
+                            Some (fst bestMove), snd bestMove
+
+                EstablishScore game (getTurn game = perspective)
 
             NodeCounter.Reset()
             MiniMax
