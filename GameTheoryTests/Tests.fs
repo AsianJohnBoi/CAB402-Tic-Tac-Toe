@@ -160,7 +160,6 @@ namespace QUT
         [<TestMethod>] member this.GameTheory000 () = Assert.AreEqual((Some 'b', 6),  BasicMiniMax 0 "fred")
 
         // Check that Alpha Beta pruning produces the same answer as MiniMax
-        (*
         [<TestMethod>] member this.GameTheory119 () = Assert.AreEqual((noMove, 5), AlphaBetaPruning 19 "fred")
         [<TestMethod>] member this.GameTheory120 () = Assert.AreEqual((noMove, 6), AlphaBetaPruning 20 "fred")
         [<TestMethod>] member this.GameTheory121 () = Assert.AreEqual((noMove, 7), AlphaBetaPruning 21 "fred")
@@ -227,4 +226,3 @@ namespace QUT
         [<TestMethod>] member this.GameTheory202 () = Assert.AreEqual((Some 'f', 6), AlphaBetaPruningWithChecks 2 "fred")
 
         [<TestMethod>] member this.GameTheory200 () = Assert.AreEqual((Some 'b', 6),  AlphaBetaPruningWithChecks 0 "fred")
-        *)
