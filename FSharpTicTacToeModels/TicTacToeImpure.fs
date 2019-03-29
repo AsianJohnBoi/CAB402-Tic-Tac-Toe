@@ -17,8 +17,6 @@ namespace QUT
                 member this.Row with get() = raise (System.NotImplementedException("getRow"))
                 member this.Col with get() = raise (System.NotImplementedException("getCol"))
 
-
-
         let GameOutcome game     = raise (System.NotImplementedException("GameOutcome"))
 
         let ApplyMove game move  = raise (System.NotImplementedException("ApplyMove"))

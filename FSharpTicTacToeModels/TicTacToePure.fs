@@ -7,23 +7,25 @@ namespace QUT
 
         // type to represent a single move specified using (row, column) coordinates of the selected square
         type Move = 
-            { something: int (* TODO implement type *) }
+            { row: int; column: int }
             interface ITicTacToeMove with
-                member this.Row with get() = raise (System.NotImplementedException("getRow"))
-                member this.Col with get() = raise (System.NotImplementedException("getCol"))
+                member this.Row with get() = this.row
+                member this.Col with get() = this.column
 
         // type to represent the current state of the game, including the size of the game (NxN), who's turn it is and the pieces on the board
         type GameState = 
-            { something: int (* TODO implement type *) }
+            { Turn: Player; Size: int; getPiece: int * int}
             interface ITicTacToeGame<Player> with
-                member this.Turn with get()    = raise (System.NotImplementedException("getTurn"))
-                member this.Size with get()    = raise (System.NotImplementedException("getSize"))
-                member this.getPiece(row, col) = raise (System.NotImplementedException("getPiece"))
+                member this.Turn with get()    = this.Turn
+                member this.Size with get()    = this.Size
+                member this.getPiece(row, col) = this.getPiece.ToString()
 
 
-        let CreateMove row col = raise (System.NotImplementedException("CreateMove"))
+        let CreateMove row col = {row = row; column = col}
 
-        let ApplyMove (oldState:GameState) (move: Move) = raise (System.NotImplementedException("CreateMove"))
+        let ApplyMove (oldState:GameState) 
+                      (move: Move) = 
+                      raise (System.NotImplementedException("CreateMove"))
 
         // Returns a sequence containing all of the lines on the board: Horizontal, Vertical and Diagonal
         // The number of lines returned should always be (size*2+2)
