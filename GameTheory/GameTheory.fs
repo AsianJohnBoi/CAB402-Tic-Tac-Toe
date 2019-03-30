@@ -13,9 +13,9 @@ namespace QUT
                 NodeCounter.Increment()
 
                 let rec EstablishScore (game : 'Game) (isMax: bool) = 
-                    let score = heuristic game perspective //player's score
-                    if gameOver game 
-                        then None, score //player's final score
+                    if gameOver game then 
+                        let score = heuristic game perspective //player's score
+                        None, score //player's final score
                     else 
                         let moves = moveGenerator game //finds moves, returns a sequence
                         if Seq.isEmpty moves then

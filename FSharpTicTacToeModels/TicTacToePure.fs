@@ -103,5 +103,5 @@ namespace QUT
 
         type WithAlphaBetaPruning() =
             inherit Model()
-            override this.ToString()         = "Pure F# with Alpha Beta Pruning";
+            override this.ToString()         = "Pure F# with Alpha Beta Pruning";1
             override this.FindBestMove(game) = raise (System.NotImplementedException("FindBestMove"))
