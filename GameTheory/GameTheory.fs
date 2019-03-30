@@ -65,8 +65,16 @@ namespace QUT
                                 nextGameScores 
                                 |> Seq.map (fun (m, r) -> m, snd r) //creates a new sequence of elements with the second element of tuple
                             let bestMove = 
-                                if isMax then Seq.maxBy snd secondElementMove //Max value in sequence 
-                                else Seq.minBy snd secondElementMove //Min value in sequence
+                                if isMax then 
+                                    let value = Seq.maxBy snd secondElementMove 
+                                    let a = max alpha value
+                                    if a >= beta then break
+                                    else value //Max value in sequence 
+                                else 
+                                    let value = Seq.minBy snd secondElementMove //Min value in sequence
+                                    let b = min beta value
+                                    if a >= beta then break
+                                    else value
                             Some (fst bestMove), snd bestMove //Some for first and second bestMove. Suitable for test 0
 
                 EstablishScore oldState (getTurn oldState = perspective)

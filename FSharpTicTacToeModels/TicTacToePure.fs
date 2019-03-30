@@ -33,7 +33,35 @@ namespace QUT
         // For example, if the input size = 2, then the output would be: 
         //     seq [seq[(0,0);(0,1)];seq[(1,0);(1,1)];seq[(0,0);(1,0)];seq[(0,1);(1,1)];seq[(0,0);(1,1)];seq[(0,1);(1,0)]]
         // The order of the lines and the order of the squares within each line does not matter
-        let Lines (size:int) : seq<seq<int*int>> = raise (System.NotImplementedException("Lines"))
+        let Lines (size:int) : seq<seq<int*int>> = 
+            //get straight row
+            let StraightRow = seq { for row in 0 .. 1 do 
+                                      for col in 0 ..1 do 
+                                        yield (row, col)
+                                  }
+            printfn "%A" StraightRow
+
+            //get straight column
+            let StraightColumn = seq { for row in 0 .. 1 do 
+                                        for col in 0 .. 1 do 
+                                         yield (col, row)
+                                         
+                                  }
+            printfn "%A" StraightColumn
+
+            //get straight diagonal
+
+
+            //combine all sequence into one under one sequence
+
+            raise (System.NotImplementedException("Lines"))
+
+            //let (height, width) = (size, size)
+            //seq { for row in 0 ..width - 1 do
+            //        for col in 0 .. height - 1 do
+            //            yield (row, col)
+            //}
+
 
         // Checks a single line (specified as a sequence of (row,column) coordinates) to determine if one of the players
         // has won by filling all of those squares, or a Draw if the line contains at least one Nought and one Cross
@@ -41,11 +69,11 @@ namespace QUT
 
         let GameOutcome game = raise (System.NotImplementedException("GameOutcome"))
 
-        let GameStart (firstPlayer:Player) size = raise (System.NotImplementedException("GameStart"))
+        let GameStart (firstPlayer:Player) size = Cross
 
-        let MiniMax game = raise (System.NotImplementedException("MiniMax"))
+        let MiniMax game = GameTheory.MiniMaxGenerator(game)
 
-        let MiniMaxWithPruning game = raise (System.NotImplementedException("MiniMaxWithPruning"))
+        let MiniMaxWithPruning game = GameTheory.MiniMaxWithAlphaBetaPruningGenerator(game)
 
         // plus other helper functions ...
 
