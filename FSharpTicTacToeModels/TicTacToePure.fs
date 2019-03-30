@@ -1,7 +1,6 @@
 namespace QUT
 
     module FSharpPureTicTacToeModel =
-    
         // type to represent the two players: Noughts and Crosses
         type Player = Nought | Cross
 
@@ -14,11 +13,15 @@ namespace QUT
 
         // type to represent the current state of the game, including the size of the game (NxN), who's turn it is and the pieces on the board
         type GameState = 
-            { Turn: Player; Size: int; getPiece: int * int}
+            { turn: Player; size: int; board: Option<Player> [,] }
             interface ITicTacToeGame<Player> with
-                member this.Turn with get()    = this.Turn
-                member this.Size with get()    = this.Size
-                member this.getPiece(row, col) = this.getPiece.ToString()
+                member this.Turn with get()    = this.turn
+                member this.Size with get()    = this.size
+                member this.getPiece(row, col) = 
+                    match Array2D.get this.board row col with
+                    | None -> " "
+                    | Some Nought -> "o"
+                    | Some Cross -> "x"
 
 
         let CreateMove row col = {row = row; column = col}
