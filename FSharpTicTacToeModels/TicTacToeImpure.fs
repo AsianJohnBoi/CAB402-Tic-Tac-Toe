@@ -2,20 +2,24 @@ namespace QUT
 
     module FSharpImpureTicTacToeModel =
     
-        type Player = Something (* implement type *)
+        type Player = Nought | Cross
 
         type GameState = 
-            { something: int (* implement type *) } 
+            { turn: Player; size: int; board: Option<Player> [,] } 
             interface ITicTacToeGame<Player> with
-                member this.Turn with get()    = raise (System.NotImplementedException("getTurn"))
-                member this.Size with get()    = raise (System.NotImplementedException("getSize"))
-                member this.getPiece(row, col) = raise (System.NotImplementedException("getPiece"))
+                member this.Turn with get()    = this.turn
+                member this.Size with get()    = this.size
+                member this.getPiece(row, col) = 
+                    match Array2D.get this.board row col with
+                    | None -> " "
+                    | Some Nought -> "o"
+                    | Some Cross -> "x"
 
         type Move = 
-            { something: int (* implement type *) }
+            { row: int; column: int }
             interface ITicTacToeMove with
-                member this.Row with get() = raise (System.NotImplementedException("getRow"))
-                member this.Col with get() = raise (System.NotImplementedException("getCol"))
+                member this.Row with get() = this.row
+                member this.Col with get() = this.column
 
         let GameOutcome game     = raise (System.NotImplementedException("GameOutcome"))
 
@@ -35,8 +39,8 @@ namespace QUT
         type WithAlphaBetaPruning() =
             override this.ToString()         = "Impure F# with Alpha Beta Pruning";
             interface ITicTacToeModel<GameState, Move, Player> with
-                member this.Cross with get()             = raise (System.NotImplementedException("getCross"))
-                member this.Nought with get()            = raise (System.NotImplementedException("getNought"))
+                member this.Cross with get()             = Cross
+                member this.Nought with get()            = Nought
                 member this.GameStart(firstPlayer, size) = GameStart firstPlayer size
                 member this.CreateMove(row, col)         = CreateMove row col
                 member this.GameOutcome(game)            = GameOutcome game 
