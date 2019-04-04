@@ -4,45 +4,140 @@ namespace QUT
     
         type Player = Nought | Cross
 
-        type GameState = 
-            { turn: Player; size: int; board: Option<Player> [,] } 
-            interface ITicTacToeGame<Player> with
-                member this.Turn with get()    = this.turn
-                member this.Size with get()    = this.size
-                member this.getPiece(row, col) = 
-                    match Array2D.get this.board row col with
-                    | None -> " "
-                    | Some Nought -> "o"
-                    | Some Cross -> "x"
-
         type Move = 
-            { row: int; column: int }
+            { 
+                row: int
+                col: int
+            }
             interface ITicTacToeMove with
                 member this.Row with get() = this.row
-                member this.Col with get() = this.column
+                member this.Col with get() = this.col
+
+        type private GameStart = 
+            {
+                size: int
+                evenPlayer : Player
+                oddPlayer : Player
+                squares: Move list
+                winningSum: int
+                diag1: Move array
+                diag2: Move array
+            }                
+
+        let mutable private pars = Unchecked.defaultof<GameStart>
+
+        type GameState = 
+            { 
+                path: Move list
+                lines: int array
+            } 
+
+            static member Create size player = 
+                {
+                    path = []
+                    lines = Array.create (2 * pars.size + 2) 0
+                }
+            
+            member this.IsDraw() = this.path.Length = pars.size * pars.size
+
+            member this.Winner
+                with get() =
+                    if this.lines |> Array.contains pars.winningSum then Some pars.evenPlayer
+                    elif this.lines |> Array.contains (-pars.winningSum) then Some pars.oddPlayer
+                    else None
+
+            member this.Score player =
+                match this.Winner with
+                | Some pl -> Some(if pl = player then 1 else -1)
+                | _ -> if (this.path.Length = pars.size * pars.size) then Some 0 else None
+            
+            interface ITicTacToeGame<Player> with
+                member this.Turn with get()    = if this.path.Length % 2 = 0 then pars.evenPlayer else pars.oddPlayer
+
+                member this.Size with get()    = pars.size
+
+                member this.getPiece(row, col) = 
+                    let piece = 
+                        function
+                        | Cross -> "X"
+                        | Nought -> "O"
+                    match this.path |> List.tryFindIndex ((=) {row = row; col = col}) with
+                    | None -> ""
+                    | Some n -> if (this.path.Length - 1 - n) % 2 = 0 then piece pars.evenPlayer else piece pars.oddPlayer
 
         let GameOutcome game     = raise (System.NotImplementedException("GameOutcome"))
 
-        let ApplyMove game move  = raise (System.NotImplementedException("ApplyMove"))
+        let ApplyMove game move  = 
+            let l1 = game.lines |> Array.copy
+            let factor = if game.path.Length % 2 = 0 then 1 else -1
+            let rowLine = move.row
+            let colLine = pars.size + move.col
+            let isDiag1 = pars.diag1 |> Array.contains move
+            let isDiag2 = pars.diag2 |> Array.contains move
+            l1.[rowLine] <- l1.[rowLine] + factor * (move.col + 1)
+            l1.[colLine] <- l1.[colLine] + factor * (move.row + 1)
+            if isDiag1 then l1.[2 * pars.size] <- l1.[2 * pars.size] + factor * (move.col + 1)          
+            if isDiag2 then l1.[2 * pars.size + 1] <- l1.[2 * pars.size + 1] + factor * (move.row + 1)
+            { game with path = move :: game.path; lines = l1 }
 
-        let CreateMove row col   = raise (System.NotImplementedException("CreateMove"))
+        let CreateMove row col   = { row = row; col = col }
 
-        let FindBestMove game    = raise (System.NotImplementedException("FindBestMove"))
+        //let FindBestMove game    = raise (System.NotImplementedException("FindBestMove"))
 
-        let GameStart first size = raise (System.NotImplementedException("GameStart"))
+        let GameStart first size = GameState.Create size first
 
         // plus other helper functions ...
 
+        [<AbstractClass>]
+        type Model() =
+            abstract member FindBestMove : GameState -> Move
+            interface ITicTacToeModel<GameState, Move, Player> with
+                member this.Cross with get()             = Cross 
+                member this.Nought with get()            = Nought 
+                member this.GameStart(firstPlayer, size) = 
+                    pars <- 
+                        { 
+                        size = size
+                        evenPlayer = firstPlayer
+                        oddPlayer = match firstPlayer with | Cross -> Nought | Nought -> Cross 
+                        squares = [
+                            for i in 0 .. (size - 1) do
+                                for j in 0 .. (size - 1) do
+                                    yield { row = i; col = j }
+                        ]
+                        winningSum = size * (size + 1) / 2
+                        diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
+                        diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
+                        }
+                    GameState.Create size firstPlayer
 
+                //GameStart firstPlayer size
+                member this.CreateMove(row, col)         = CreateMove row col
+                member this.GameOutcome(game)            = GameOutcome game
+                member this.ApplyMove(game, move)        = ApplyMove game move 
+                member this.FindBestMove(game)           = this.FindBestMove game
 
 
         type WithAlphaBetaPruning() =
+            inherit Model()
             override this.ToString()         = "Impure F# with Alpha Beta Pruning";
-            interface ITicTacToeModel<GameState, Move, Player> with
-                member this.Cross with get()             = Cross
-                member this.Nought with get()            = Nought
-                member this.GameStart(firstPlayer, size) = GameStart firstPlayer size
-                member this.CreateMove(row, col)         = CreateMove row col
-                member this.GameOutcome(game)            = GameOutcome game 
-                member this.ApplyMove(game, move)        = ApplyMove game  move
-                member this.FindBestMove(game)           = FindBestMove game
+            override this.FindBestMove(game) = 
+                let MiniMax = 
+                    let heuristic (game: GameState) player = 
+                        match game.Score player with
+                        | Some n -> n
+                        | _ -> raise(System.Exception("No Score"))
+
+                    let getTurn (game: GameState) = (game :> ITicTacToeGame<Player>).Turn
+
+                    let gameOver (game: GameState) = 
+                        game.path.Length = pars.size * pars.size || game.Winner.IsSome
+
+                    let moveGenerator (game: GameState) = pars.squares |> List.except game.path |> Seq.ofList
+
+                    let applyMove (game: GameState) (move: Move) = ApplyMove game move
+
+                    GameTheory.MiniMaxGenerator heuristic getTurn gameOver moveGenerator applyMove
+                
+                let move, _ = MiniMax game pars.evenPlayer //alpha -1 beta +1
+                move.Value

@@ -1,0 +1,16 @@
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheoryTests.deps.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheoryTests.runtimeconfig.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheoryTests.runtimeconfig.dev.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheoryTests.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheoryTests.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheory.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\NodeCounter.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\GameTheory.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\bin\Release\netcoreapp2.0\NodeCounter.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\obj\Release\netcoreapp2.0\GameTheoryTests.fsprojAssemblyReference.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\obj\Release\netcoreapp2.0\GameTheoryTests.fsproj.CopyComplete
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\obj\Release\netcoreapp2.0\GameTheoryTests.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\GameTheoryTests\obj\Release\netcoreapp2.0\GameTheoryTests.pdb

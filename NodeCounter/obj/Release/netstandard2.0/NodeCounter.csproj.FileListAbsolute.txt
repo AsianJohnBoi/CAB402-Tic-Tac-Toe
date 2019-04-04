@@ -1,0 +1,9 @@
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\bin\Release\netstandard2.0\NodeCounter.deps.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\bin\Release\netstandard2.0\NodeCounter.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\bin\Release\netstandard2.0\NodeCounter.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.csprojAssemblyReference.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.csproj.CoreCompileInputs.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.AssemblyInfoInputs.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.AssemblyInfo.cs
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\NodeCounter\obj\Release\netstandard2.0\NodeCounter.pdb

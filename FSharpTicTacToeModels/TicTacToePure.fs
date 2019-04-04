@@ -1,7 +1,6 @@
 namespace QUT
 
     module FSharpPureTicTacToeModel =
-        open System.Linq
 
         // type to represent the two players: Noughts and Crosses
         type Player = Nought | Cross
@@ -23,6 +22,7 @@ namespace QUT
                 size: int
                 board: Option<Player> [,]
             }
+
             interface ITicTacToeGame<Player> with
                 member this.Turn with get()    = this.turn
                 member this.Size with get()    = this.size
@@ -117,7 +117,7 @@ namespace QUT
                 //let move, _ = MiniMax game (game :> ITicTacToeGame<Player>).Turn
                 //move.Value
             
-            raise (System.NotImplementedException("FindBestMove"))
+                raise (System.NotImplementedException("FindBestMove"))
 
 
         type WithAlphaBetaPruning() =

@@ -1,0 +1,6 @@
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\bin\Debug\netstandard2.0\TicTacToeModelInterfaces.deps.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\bin\Debug\netstandard2.0\TicTacToeModelInterfaces.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\bin\Debug\netstandard2.0\TicTacToeModelInterfaces.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\obj\Debug\netstandard2.0\TicTacToeModelInterfaces.fsprojAssemblyReference.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\obj\Debug\netstandard2.0\TicTacToeModelInterfaces.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeModelInterfaces\obj\Debug\netstandard2.0\TicTacToeModelInterfaces.pdb
