@@ -1,8 +1,12 @@
 ﻿namespace QUT.CSharpTicTacToe
 {
+    /// <summary>
+    /// Represents a single move specified using 
+    /// (row, column) coordinates of the selected square
+    /// </summary>
     public class Move : ITicTacToeMove
     {
-        public int Row => throw new System.NotImplementedException("getRow");
-        public int Col => throw new System.NotImplementedException("getCol");
+        public int Row => Row;
+        public int Col => Col;
     }
 }

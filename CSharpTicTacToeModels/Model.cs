@@ -2,15 +2,17 @@
 {
     public class WithAlphaBetaPruning : ITicTacToeModel<Game, Move, Player>
     {
-        public Player Cross => throw new System.NotImplementedException("getCross");
-        public Player Nought => throw new System.NotImplementedException("getNought");
+        public Player Cross => Player.Cross;
+        public Player Nought => Player.Nought;
+
         public override string ToString()
         {
             return "Impure C# with Alpha Beta Pruning";
         }
         public Game ApplyMove(Game game, Move move)
         {
-            throw new System.NotImplementedException("ApplyMove");
+            throw new System.NotImplementedException("ApplyMove"); 
+            //return new game
         }
         public Move CreateMove(int row, int col)
         {
@@ -26,7 +28,9 @@
         }
         public Game GameStart(Player first, int size)
         {
-            throw new System.NotImplementedException("GameStart");
+            //Game new_game = first, size;
+            //return new_game;
+            throw new System.NotImplementedException("ApplyMove");
         }
     }
 }

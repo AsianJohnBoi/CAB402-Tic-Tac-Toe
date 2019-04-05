@@ -134,3 +134,5 @@ C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\obj\Debug\TicTacToeWPF.csp
 C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\obj\Debug\TicTacToeWPF.csproj.CopyComplete
 C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\obj\Debug\TicTacToeWPF.exe
 C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\obj\Debug\TicTacToeWPF.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\bin\Debug\GameTheory.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\TicTacToeWPF\bin\Debug\GameTheory.pdb

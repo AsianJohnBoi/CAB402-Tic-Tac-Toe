@@ -1,7 +1,11 @@
 ﻿namespace QUT.CSharpTicTacToe
 {
+    /// <summary>
+    /// Represents the two players: Noughts and Crosses
+    /// </summary>
     public enum Player
     {
-        /* implement me - doesn't have to be an enum */
+        Nought,
+        Cross
     }
 }
