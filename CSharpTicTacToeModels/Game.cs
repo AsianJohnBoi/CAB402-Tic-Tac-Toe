@@ -8,10 +8,18 @@ namespace QUT.CSharpTicTacToe
     /// including the size of the game (NxN), 
     /// who's turn it is and the pieces on the board
     /// </summary>
+    /// 
+    public class GameStart
+    {
+        public int Size;
+        public Player evenPlayer;
+        public Player oddPlayer;
+    }
+
     public class Game : ITicTacToeGame<Player>
     {
-        public int Size => Size;
-        public Player Turn => Turn;
+        public List<Move> path;
+        public int[] lines;
 
         //add constructor
         public string getPiece(int row, int col)
@@ -29,5 +37,28 @@ namespace QUT.CSharpTicTacToe
             throw new System.NotImplementedException("ApplyMove");
 
         }
+
+        public Player Turn => this.path.Count % 2 == 0 ? Pars.evenPlayer : Pars.oddPlayer;
+        public Player Turn1
+        {
+            get
+            {
+                return this.path.Count % 2 == 0 ? _pars.evenPlayer : _pars.oddPlayer;
+            }
+
+         }
+
+        private GameStart Pars => FSharpImpureTicTacToeModel.pars;
+
+
+    }
+
+    public static class FSharpImpureTicTacToeModel
+    {
+        public static GameStart pars;
+        public static Game game;
     }
 }
+
+Gamestart(Player firstPlayer, int size)
+    FSharpImpureTicTacToeModel.pars.size = size;
