@@ -1,0 +1,14 @@
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\CSharpTicTacToeModels.deps.json
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\CSharpTicTacToeModels.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\CSharpTicTacToeModels.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\NodeCounter.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\TicTacToeModelInterfaces.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\NodeCounter.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\bin\Release\netstandard2.0\TicTacToeModelInterfaces.pdb
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.csprojAssemblyReference.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.csproj.CoreCompileInputs.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.AssemblyInfoInputs.cache
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.AssemblyInfo.cs
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.csproj.CopyComplete
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.dll
+C:\Users\John\Desktop\CAB402-Tic-Tac-Toe\CSharpTicTacToeModels\obj\Release\netstandard2.0\CSharpTicTacToeModels.pdb

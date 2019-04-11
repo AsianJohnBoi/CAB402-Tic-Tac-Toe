@@ -9,56 +9,81 @@ namespace QUT.CSharpTicTacToe
     /// who's turn it is and the pieces on the board
     /// </summary>
     /// 
-    public class GameStart
-    {
-        public int Size;
-        public Player evenPlayer;
-        public Player oddPlayer;
-    }
-
     public class Game : ITicTacToeGame<Player>
     {
-        public List<Move> path;
-        public int[] lines;
+        public int Size { get; set; }
+        public Player Turn { get; set; }
 
-        //add constructor
-        public string getPiece(int row, int col)
+        public Game(Player first, int size)
         {
-            //int array[] = new Array<int> { row, col };
-
-            //if (Array is Not empyty)
-            //{
-            //    return Array.ToString()
-            //}
-            //return None;
-            //return array.ToString();
-            //returns a string
-            //should this return all the values of the player
-            throw new System.NotImplementedException("ApplyMove");
-
+            this.Turn = first;
+            this.Size = size;
         }
 
-        public Player Turn => this.path.Count % 2 == 0 ? Pars.evenPlayer : Pars.oddPlayer;
-        public Player Turn1
+        public string getPiece(int row, int col)
         {
-            get
-            {
-                return this.path.Count % 2 == 0 ? _pars.evenPlayer : _pars.oddPlayer;
-            }
+            //switch case Cross -> X, nouht -> O
 
-         }
-
-        private GameStart Pars => FSharpImpureTicTacToeModel.pars;
-
-
-    }
-
-    public static class FSharpImpureTicTacToeModel
-    {
-        public static GameStart pars;
-        public static Game game;
+            //switch match empty list (path) with given row and column
+            throw new System.NotImplementedException("getPiece");
+        }
     }
 }
 
-Gamestart(Player firstPlayer, int size)
-    FSharpImpureTicTacToeModel.pars.size = size;
+
+
+
+
+//    public class GameStart
+//    {
+//        public int Size;
+//        public Player evenPlayer;
+//        public Player oddPlayer;
+//    }
+
+//    public class Game : ITicTacToeGame<Player>
+//    {
+//        public List<Move> path;
+//        public int[] lines;
+
+//        //add constructor
+//        public string getPiece(int row, int col)
+//        {
+//            //int array[] = new Array<int> { row, col };
+
+//            //if (Array is Not empyty)
+//            //{
+//            //    return Array.ToString()
+//            //}
+//            //return None;
+//            //return array.ToString();
+//            //returns a string
+//            //should this return all the values of the player
+//            throw new System.NotImplementedException("ApplyMove");
+
+//        }
+
+//        public Player Turn => this.path.Count % 2 == 0 ? Pars.evenPlayer : Pars.oddPlayer;
+//        public Player Turn1
+//        {
+//            get
+//            {
+//                return this.path.Count % 2 == 0 ? _pars.evenPlayer : _pars.oddPlayer;
+//            }
+
+//        }
+
+//        private GameStart Pars => FSharpImpureTicTacToeModel.pars;
+
+
+//    }
+
+//    public static class FSharpImpureTicTacToeModel
+//    {
+//        public static GameStart pars;
+//        public static Game game;
+//    }
+//}
+
+//Gamestart(Player firstPlayer, int size)
+//    FSharpImpureTicTacToeModel.pars.size = size;

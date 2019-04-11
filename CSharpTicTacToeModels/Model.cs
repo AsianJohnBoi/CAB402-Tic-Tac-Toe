@@ -5,21 +5,32 @@
         public Player Cross => Player.Cross;
         public Player Nought => Player.Nought;
 
+        private int row;
+        private int col;
+
         public override string ToString()
         {
             return "Impure C# with Alpha Beta Pruning";
         }
         public Game ApplyMove(Game game, Move move)
         {
+
             throw new System.NotImplementedException("ApplyMove"); 
             //return new game
         }
         public Move CreateMove(int row, int col)
         {
-            throw new System.NotImplementedException("CreateMove");
+            this.row = row;
+            this.col = col;
+            Move nextMove = new Move(row, col);
+            return nextMove;
         }
         public Move FindBestMove(Game game)
         {
+            //public heuristic(Game game)
+            //{
+            //    switch(game.Score)
+            //}
             throw new System.NotImplementedException("FindBestMove");
         }
         public TicTacToeOutcome<Player> GameOutcome(Game game)
@@ -28,9 +39,8 @@
         }
         public Game GameStart(Player first, int size)
         {
-            //Game new_game = first, size;
-            //return new_game;
-            throw new System.NotImplementedException("ApplyMove");
+            Game new_game = new Game(first, size);
+            return new_game;
         }
     }
 }

@@ -120,7 +120,23 @@ module FSharpPureTicTacToeModel =
 
     let MiniMaxWithPruning game = raise (System.NotImplementedException("MiniMaxWithPruning"))
 
-    // plus other helper functions ...
+    let GameStart (firstPlayer:Player) size = 
+        { 
+            path = [] 
+            lines = Array.create (2 * size + 2) 0
+            size = size
+            evenPlayer = firstPlayer
+            oddPlayer = match firstPlayer with | Cross -> Nought | Nought -> Cross 
+            squares = [
+                for i in 0 .. (size - 1) do
+                    for j in 0 .. (size - 1) do
+                        yield { row = i; col = j }
+            ]
+            winningSum = size * (size + 1) / 2
+            diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
+            diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
+        }
+
 
     [<AbstractClass>]
     type Model() =
@@ -128,24 +144,7 @@ module FSharpPureTicTacToeModel =
         interface ITicTacToeModel<GameState, Move, Player> with
             member this.Cross with get()             = Cross 
             member this.Nought with get()            = Nought 
-            member this.GameStart(firstPlayer, size) = 
-                    { 
-                    path = [] 
-                    lines = Array.create (2 * size + 2) 0
-                    size = size
-                    evenPlayer = firstPlayer
-                    oddPlayer = match firstPlayer with | Cross -> Nought | Nought -> Cross 
-                    squares = [
-                        for i in 0 .. (size - 1) do
-                            for j in 0 .. (size - 1) do
-                                yield { row = i; col = j }
-                    ]
-                    winningSum = size * (size + 1) / 2
-                    diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
-                    diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
-                    }
-                
-
+            member this.GameStart(firstPlayer, size) = GameStart firstPlayer size
             member this.CreateMove(row, col)         = CreateMove row col
             member this.GameOutcome(game)            = GameOutcome game
             member this.ApplyMove(game, move)        = ApplyMove game move 

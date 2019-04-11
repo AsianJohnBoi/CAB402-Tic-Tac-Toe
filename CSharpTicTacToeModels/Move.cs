@@ -6,7 +6,14 @@
     /// </summary>
     public class Move : ITicTacToeMove
     {
-        public int Row => Row;
-        public int Col => Col;
+        public Move(int row, int col)
+        {
+            this.Row = row;
+            this.Col = col;
+        }
+
+        public int Row { get; set; }
+        public int Col { get; set; }
+
     }
 }
