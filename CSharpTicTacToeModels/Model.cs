@@ -86,12 +86,12 @@ namespace QUT.CSharpTicTacToe
         }
         public TicTacToeOutcome<Player> GameOutcome(Game game)
         {
-            if (game.IsDraw())
-            {
-                return 0;
-            }
-            return game.Winner();
-
+            //if (game.IsDraw())
+            //{
+            //    return 0;
+            //}
+            //return game.Winner();
+            throw new System.NotImplementedException("GameOutcome");
         }
         public Game GameStart(Player first, int size)
         {

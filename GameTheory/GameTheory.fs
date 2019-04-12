@@ -10,9 +10,9 @@ namespace QUT
                              (applyMove: 'Game -> 'Move -> 'Game) : 'Game -> 'Player -> Option<'Move> * int = 
             // Basic MiniMax algorithm without using alpha beta pruning
             let rec MiniMax (game: 'Game) (perspective: 'Player) =
-                NodeCounter.Increment()
 
                 let rec EstablishScore (game : 'Game) (isMax: bool) = 
+                    NodeCounter.Increment()
                     if gameOver game then 
                         let score = heuristic game perspective //player's score
                         None, score //player's final score
@@ -34,10 +34,8 @@ namespace QUT
                                 if isMax then Seq.maxBy snd secondElementMove //Max value in sequence 
                                 else Seq.minBy snd secondElementMove //Min value in sequence
                             Some (fst bestMove), snd bestMove //Some for first and second bestMove. Suitable for test 0
-
+                NodeCounter.Reset()
                 EstablishScore game (getTurn game = perspective)
-
-            NodeCounter.Reset()
             MiniMax
 
         let MiniMaxWithAlphaBetaPruningGenerator (heuristic:'Game -> 'Player -> int) 
@@ -48,9 +46,9 @@ namespace QUT
                                                  : int -> int -> 'Game -> 'Player -> Option<'Move> * int =
             // Optimized MiniMax algorithm that uses alpha beta pruning to eliminate parts of the search tree that don't need to be explored            
             let rec MiniMax (alpha: int) (beta: int) oldState perspective : Option<'Move> * int = //alpha tracks lowest possible score. beta tracks highest possible score of node
-                NodeCounter.Increment()
                 
                 let rec EstablishScore (alpha:int) (beta:int) (game : 'Game) (isMax: bool) : Option<'Move> * int = 
+                    NodeCounter.Increment()
                     if gameOver game then None, (heuristic game perspective) //player's final score
                     else 
                         let moves = moveGenerator game //finds moves, returns a sequence

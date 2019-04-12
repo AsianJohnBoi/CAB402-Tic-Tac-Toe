@@ -139,5 +139,5 @@ namespace QUT
 
                     GameTheory.MiniMaxGenerator heuristic getTurn gameOver moveGenerator applyMove
                 
-                let move, _ = MiniMax game pars.evenPlayer //alpha -1 beta +1
+                let move, _ = MiniMax game pars.evenPlayer 
                 move.Value
