@@ -19,7 +19,8 @@ namespace QUT
                 evenPlayer : Player
                 oddPlayer : Player
                 squares: Move list
-                winningSum: int
+                winningSumEven: int
+                winningSumOdd: int
                 diag1: Move array
                 diag2: Move array
             }                
@@ -38,18 +39,20 @@ namespace QUT
                     lines = Array.create (2 * pars.size + 2) 0
                 }
             
-            member this.IsDraw() = this.path.Length = pars.size * pars.size
+            member this.IsDraw() = 
+                let lineIsDraw sum = sum > 100 && sum % 100 <> 0
+                this.lines |> Array.forall lineIsDraw
 
             member this.Winner
                 with get() =
-                    if this.lines |> Array.contains pars.winningSum then Some pars.evenPlayer
-                    elif this.lines |> Array.contains (-pars.winningSum) then Some pars.oddPlayer
+                    if this.lines |> Array.contains pars.winningSumEven then Some pars.evenPlayer
+                    elif this.lines |> Array.contains pars.winningSumOdd then Some pars.oddPlayer
                     else None
 
             member this.Score player =
                 match this.Winner with
                 | Some pl -> Some(if pl = player then 1 else -1)
-                | _ -> if (this.path.Length = pars.size * pars.size) then Some 0 else None
+                | _ -> if this.IsDraw() then Some 0 else None
             
             interface ITicTacToeGame<Player> with
                 member this.Turn with get()    = if this.path.Length % 2 = 0 then pars.evenPlayer else pars.oddPlayer
@@ -65,7 +68,39 @@ namespace QUT
                     | None -> ""
                     | Some n -> if (this.path.Length - 1 - n) % 2 = 0 then piece pars.evenPlayer else piece pars.oddPlayer
 
-        let GameOutcome game     = raise (System.NotImplementedException("GameOutcome"))
+        let Lines (size:int) : seq<seq<int*int>> = 
+            seq  {
+                for i in 0 .. (size - 1) do
+                    yield seq {
+                        for j in 0 .. (size - 1) do
+                            yield (i, j)
+                    }
+                for i in 0 .. (size - 1) do
+                    yield seq {
+                        for j in 0 .. (size - 1) do
+                            yield (j, i)
+                    }
+                yield seq {
+                    for i in 0 .. (size - 1) do
+                        yield (i, i)
+                }
+                yield seq {
+                    for i in 0 .. (size - 1) do
+                        yield (i, size - i - 1)
+                }
+            }
+
+        let GameOutcome (game: GameState) = 
+            let winningSquares() = 
+                let winningLine = game.lines |> Array.findIndex (fun v -> v = pars.winningSumEven || v = pars.winningSumOdd)
+                Lines pars.size |> Seq.item winningLine 
+
+            match game with
+            | game when game.IsDraw() -> TicTacToeOutcome<Player>.Draw
+            | game ->
+                match game.Winner with
+                | None -> TicTacToeOutcome<Player>.Undecided
+                | Some player -> TicTacToeOutcome<Player>.Win (player, winningSquares())
 
         let ApplyMove game move  = 
             let l1 = game.lines |> Array.copy
@@ -82,11 +117,7 @@ namespace QUT
 
         let CreateMove row col   = { row = row; col = col }
 
-        //let FindBestMove game    = raise (System.NotImplementedException("FindBestMove"))
-
         let GameStart first size = GameState.Create size first
-
-        // plus other helper functions ...
 
         [<AbstractClass>]
         type Model() =
@@ -105,7 +136,8 @@ namespace QUT
                                 for j in 0 .. (size - 1) do
                                     yield { row = i; col = j }
                         ]
-                        winningSum = size * (size + 1) / 2
+                        winningSumEven = size * (size + 1) / 2
+                        winningSumOdd = 100 * size * (size + 1) / 2
                         diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
                         diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
                         }

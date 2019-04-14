@@ -13,14 +13,15 @@ namespace QUT.CSharpTicTacToe
 
         public override string ToString()
         {
-            return "Impure C# with Alpha Beta Pruning";
+            return "Pure C# with Alpha Beta Pruning";
         }
+
         public Game ApplyMove(Game game, Move move)
         {
 
             throw new System.NotImplementedException("ApplyMove"); 
-            //return new game
         }
+
         public Move CreateMove(int row, int col)
         {
             this.row = row;
@@ -28,57 +29,53 @@ namespace QUT.CSharpTicTacToe
             Move nextMove = new Move(row, col);
             return nextMove;
         }
+
+        public int heuristic(Player player, Game game)
+        {
+            int score = game.Score(player);
+            if (score > 0)
+            {
+                return score;
+            }
+            return 0;
+        }
+
+        public Player getTurn(Game game)
+        {
+            return game.Turn;
+        }
+
+        public bool gameOver(Game game)
+        {
+            if (game.path.Count == game.Size * game.Size || game.IsDraw())
+            {
+                return true;
+            }
+            //else if (game.Winner)
+            //{
+            //    return true;
+            //}
+            return false;
+        }
+
+        //create a list from the game.squares and remove ones that already have the game.path.
+        public List<Move> moveGenerator(Game game)
+        {
+            List<Move> moves = new List<Move>();
+            foreach (Move i in game.squares)
+            {
+                if (!game.path.Contains(i))
+                {
+                    moves.Add(i);
+                }
+            }
+            return moves;
+        }
+
         public Move FindBestMove(Game game)
         {
-            int heuristic(Player player)
-            {
-                int score = game.Score(player);
-                if (score > 0)
-                {
-                    return score;
-                }
-                return 0;
-            }
-            
-            Player getTurn()
-            {
-                return game.Turn;
-            }
+           //MiniMaxWithAlphaBetaPruningGenerator newMove = new MiniMaxWithAlphaBetaPruningGenerator(heuristic(getTurn(game), game), getTurn(game), gameOver(game), moveGenerator(game));
 
-            bool gameOver(){
-                if (game.path.Count == game.Size * game.Size || game.IsDraw())
-                {
-                    return true;
-                }
-                //else if (game.Winner)
-                //{
-                //    return true;
-                //}
-                return false;
-            }
-
-            //create a list from the game.squares and remove ones that already have the game.path.
-            List<Move> moveGenerator()
-            {
-                List<Move> moves = new List<Move>();
-                foreach (Move i in game.squares)
-                {
-                    if (!game.path.Contains(i))
-                    {
-                        moves.Add(i);
-                    }
-                }
-                return moves;
-            }
-
-            Game applyMove(Move move)
-            {
-                Game nextGame = ApplyMove(game, move);
-                return nextGame;
-            }
-
-            //GameTheory.MiniMaxWithAlphaBetaPruningGenerator(heuristic, getTurn, gameOver, moveGenerator, applyMove);
-            
             //Move best = Minimax game game.evenPlayer;
             //return best;
 
