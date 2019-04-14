@@ -24,23 +24,26 @@ module FSharpPureTicTacToeModel =
             evenPlayer : Player
             oddPlayer : Player
             squares: Move list
-            winningSum: int
+            winningSumEven: int
+            winningSumOdd: int
             diag1: Move array
             diag2: Move array
         }
 
-        member this.IsDraw() = this.path.Length = this.size * this.size
+        member this.IsDraw() = 
+            let lineIsDraw sum = sum > 100 && sum % 100 <> 0
+            this.lines |> Array.forall lineIsDraw
 
         member this.Winner
             with get() =
-                if this.lines |> Array.contains this.winningSum then Some this.evenPlayer
-                elif this.lines |> Array.contains (-this.winningSum) then Some this.oddPlayer
+                if this.lines |> Array.contains this.winningSumEven then Some this.evenPlayer
+                elif this.lines |> Array.contains this.winningSumOdd then Some this.oddPlayer
                 else None
 
         member this.Score player = 
             match this.Winner with
             | Some pl -> Some(if pl = player then 1 else -1)
-            | _ ->  if (this.path.Length = this.size * this.size) then Some 0 else None
+            | _ ->  if this.IsDraw() then Some 0 else None
 
         interface ITicTacToeGame<Player> with
             member this.Turn with get() = if this.path.Length % 2 = 0 then this.evenPlayer else this.oddPlayer
@@ -62,7 +65,7 @@ module FSharpPureTicTacToeModel =
 
     let ApplyMove (oldState:GameState) (move: Move) = 
         let l1 = oldState.lines |> Array.copy
-        let factor = if oldState.path.Length % 2 = 0 then 1 else -1
+        let factor = if oldState.path.Length % 2 = 0 then 1 else 100
         let rowLine = move.row
         let colLine = oldState.size + move.col
         let isDiag1 = oldState.diag1 |> Array.contains move
@@ -107,7 +110,7 @@ module FSharpPureTicTacToeModel =
 
     let GameOutcome (game: GameState) = 
         let winningSquares() = 
-            let winningLine = game.lines |> Array.findIndex (fun v -> abs(v) = game.winningSum)
+            let winningLine = game.lines |> Array.findIndex (fun v -> v = game.winningSumEven || v = game.winningSumOdd)
             Lines game.size |> Seq.item winningLine 
 
         match game with
@@ -132,11 +135,11 @@ module FSharpPureTicTacToeModel =
                     for j in 0 .. (size - 1) do
                         yield { row = i; col = j }
             ]
-            winningSum = size * (size + 1) / 2
+            winningSumEven = size * (size + 1) / 2
+            winningSumOdd = 100 * size * (size + 1) / 2
             diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
             diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
         }
-
 
     [<AbstractClass>]
     type Model() =
@@ -163,7 +166,7 @@ module FSharpPureTicTacToeModel =
                 let getTurn (game: GameState) = (game :> ITicTacToeGame<Player>).Turn
 
                 let gameOver (game: GameState) = 
-                    game.path.Length = game.size * game.size || game.Winner.IsSome
+                    game.IsDraw() || game.Winner.IsSome
 
                 let moveGenerator (game: GameState) = game.squares |> List.except game.path |> Seq.ofList
 
@@ -177,27 +180,7 @@ module FSharpPureTicTacToeModel =
     type WithAlphaBetaPruning() =
         inherit Model()
         override this.ToString()         = "Pure F# with Alpha Beta Pruning";
-        override this.FindBestMove(game) = 
-            let MiniMax = 
-                let heuristic (game: GameState) player = 
-                    match game.Score player with
-                    | Some n -> n
-                    | _ -> raise(System.Exception("No Score"))
-
-                let getTurn (game: GameState) = (game :> ITicTacToeGame<Player>).Turn
-
-                let gameOver (game: GameState) = 
-                    game.path.Length = game.size * game.size || game.Winner.IsSome
-
-                let moveGenerator (game: GameState) = game.squares |> List.except game.path |> Seq.ofList
-
-                let applyMove (game: GameState) (move: Move) = ApplyMove game move
-
-                GameTheory.MiniMaxGenerator heuristic getTurn gameOver moveGenerator applyMove
-
-            let move, _ = MiniMax game game.evenPlayer
-            move.Value
-            //pass lowest and highest possible score.
+        override this.FindBestMove(game) = raise (System.NotImplementedException("FindBestMove"))
 
 
 
