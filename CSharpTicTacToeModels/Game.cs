@@ -13,14 +13,14 @@ namespace QUT.CSharpTicTacToe
         public int Size;
         public Player Turn;
         public List<Move> path;
-        private int[] lines;
-        private Player evenPlayer;
-        private Player oddPlayer;
+        public int[] lines;
+        public Player evenPlayer;
+        public Player oddPlayer;
         public List<Move> squares;
-        private int winningSumEven;
-        private int winningSumOdd;
-        private Move diag1;
-        private Move diag2;
+        public int winningSumEven;
+        public int winningSumOdd;
+        public Move[] diag1;
+        public Move[] diag2;
 
         int ITicTacToeGame<Player>.Size => this.Size;
         Player ITicTacToeGame<Player>.Turn => (this.path.Count % 2 == 0) ? evenPlayer : oddPlayer;
