@@ -17,6 +17,45 @@ namespace QUT.CSharpTicTacToe
             return "Pure C# with Alpha Beta Pruning";
         }
 
+        public Game GameStart(Player first, int size)
+        {
+            List<Move> path = new List<Move>();
+            int[] lines = new int[2 * size + 2];
+            Game new_game = new Game(first, size);
+            new_game.evenPlayer = first;
+            if (first == Cross) { new_game.oddPlayer = Nought; }
+            else if (first == Nought) { new_game.oddPlayer = Cross; }
+            List<Move> squares = new List<Move>();
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    squares.Add(new Move(i, j));
+                }
+            }
+            new_game.winningSumEven = size * (size + 1) / 2;
+            new_game.winningSumOdd = 100 * size * (size + 1) / 2;
+            for (int i = 0; i < size; i++)
+            {
+                new_game.diag1[i] = new Move(i, i);
+                new_game.diag2[i] = new Move(i, (size - i - 1));
+            }
+            return new_game;
+        }
+
+        public Move FindBestMove(Game game)
+        {
+            throw new System.NotImplementedException("FindBestMove");
+        }
+
+        public Move CreateMove(int row, int col)
+        {
+            this.row = row;
+            this.col = col;
+            Move nextMove = new Move(row, col);
+            return nextMove;
+        }
+
         public Game ApplyMove(Game game, Move move)
         {
             int[] l1 = game.lines;
@@ -34,45 +73,10 @@ namespace QUT.CSharpTicTacToe
             return game;
         }
 
-        public Move CreateMove(int row, int col)
-        {
-            this.row = row;
-            this.col = col;
-            Move nextMove = new Move(row, col);
-            return nextMove;
-        }
-
-        public Move FindBestMove(Game game)
-        {
-            throw new System.NotImplementedException("FindBestMove");
-        }
         public TicTacToeOutcome<Player> GameOutcome(Game game)
         {
-            //int winningline = game.lines.findIndex
+            //int winningline = game.lines
             throw new System.NotImplementedException("GameOutcome");
-        }
-        public Game GameStart(Player first, int size)
-        {
-            List<Move> path = new List<Move>();
-            int[] lines = new int[2 * size + 2];
-            Game new_game = new Game(first, size);
-            new_game.evenPlayer = first;
-            if (first == Cross) { new_game.oddPlayer = Nought; }
-            else if (first == Nought) { new_game.oddPlayer = Cross; }
-            List<Move> squares = new List<Move>();
-            for (int i = 0; i < size; i ++){
-                for (int j = 0; j < size; j++)
-                {         
-                    squares.Add(new Move(i, j));
-                }  
-            }
-            new_game.winningSumEven = size * (size + 1) / 2;
-            new_game.winningSumOdd = 100 * size * (size + 1) / 2;
-            for (int i = 0; i < size; i++) {
-                new_game.diag1[i] = new Move(i, i);
-                new_game.diag2[i] = new Move(i, (size - i - 1));
-            }
-            return new_game;
         }
 
         public int heuristic(Player player, Game game)
