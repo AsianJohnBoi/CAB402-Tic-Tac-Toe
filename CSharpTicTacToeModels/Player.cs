@@ -6,6 +6,6 @@
     public enum Player
     {
         Nought,
-        Cross
+        Cross,
     }
 }
