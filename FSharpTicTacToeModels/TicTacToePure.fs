@@ -123,8 +123,6 @@ module FSharpPureTicTacToeModel =
 
     let MiniMaxWithPruning game = raise (System.NotImplementedException("MiniMaxWithPruning"))
 
-    // plus other helper functions ...
-
     [<AbstractClass>]
     type Model() =
         abstract member FindBestMove : GameState -> Move

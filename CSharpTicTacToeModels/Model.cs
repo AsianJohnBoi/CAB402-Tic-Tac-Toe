@@ -48,8 +48,8 @@ namespace QUT.CSharpTicTacToe
             bool isMax = true;
             if (getTurn(game) == game.evenPlayer) { isMax = true; }
             else { isMax = false; }
-            List<(Move m, int i)> best = MiniMaxWithAlphaBetaPruning(1, 10, game, isMax);
-            return best[0].m;
+            (Move m, int i) best = MiniMaxWithAlphaBetaPruning(1, 10, game, isMax);
+            return best.m;
         }
 
         public Move CreateMove(int row, int col)
@@ -97,9 +97,8 @@ namespace QUT.CSharpTicTacToe
                     TicTacToeOutcome<Player> Win;
                 }
             }
-            //return (TicTacToeOutcome<Player> Undecided);
+            return (TicTacToeOutcome<Player>.Undecided);
 
-            throw new NotImplementedException();
         }
 
         public List<List<(int, int)>> Lines(int size)
@@ -175,20 +174,20 @@ namespace QUT.CSharpTicTacToe
             return moves;
         }
 
-        public List<(Move, int)> MiniMaxWithAlphaBetaPruning(int alpha, int beta, Game game, bool isMax)
+        public (Move, int) MiniMaxWithAlphaBetaPruning(int alpha, int beta, Game game, bool isMax)
         {
             NodeCounter.Increment();
             if (gameOver(game))
             {
-                List<(Move, int)> gameOverList = new List<(Move, int)> { (null, heuristic(game, getTurn(game))) };
-                return gameOverList;
+                (Move, int) gameOverTuple = (null, heuristic(game, getTurn(game)));
+                return gameOverTuple;
             }
             else
             {
                 List<Move> moves = moveGenerator(game);
                 if (moves.Count == 0)
                 {
-                    List<(Move, int)> noMoves = new List<(Move, int)> { (null, 0) };
+                    (Move, int) noMoves = (null, 0);
                     return noMoves;
                 }
 
@@ -197,37 +196,37 @@ namespace QUT.CSharpTicTacToe
 
                 mapScoresPrunned(alpha, beta, nextGameStates, moves, isMax, game);
             }
-            List<(Move, int)> noMove = new List<(Move, int)> { (null, 0) };
+            (Move, int) noMove = (null, 0);
             return noMove;
         }
 
-        public List<(Move, int)> mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game)
+        public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game)
         {
             (Move m, Game g) = states[0];
-            List<(Move m, int i)> move = MiniMaxWithAlphaBetaPruning(alpha, beta, g, !isMax);
-            int score = move[0].i;
+            (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, g, !isMax);
+            int score = move.i;
 
             int alpha1 = (isMax && score > alpha) ? score : alpha;
             int beta1 = (!isMax && score < beta) ? score : alpha;
             if (alpha1 >= beta1 || (states[states.Count - 1].m == null && (states[states.Count - 1].i == null)))
             {
-                List<(Move, int)> alphaIsGreatOrEqual = new List<(Move, int)> { (m, score) };
+                (Move, int) alphaIsGreatOrEqual = (m, score);
                 return alphaIsGreatOrEqual;
             }
-            List<(Move, Game)> newState = new List<(Move, Game)> { states[states.Count - 1] };
-            List<(Move m, int i)> nextMove = mapScoresPrunned(alpha, beta, states, moves, isMax, game);
+            //List<(Move, Game)> newState = new List<(Move, Game)> { states[states.Count - 1] };
+            (Move m, int i) nextMove = mapScoresPrunned(alpha, beta, states, moves, isMax, game);
             if (isMax)
             {
-                if (score >= nextMove[0].i)
+                if (score >= nextMove.i)
                 {
-                    List<(Move, int)> MaxScore = new List<(Move, int)> { (m, score) };
+                    (Move, int)MaxScore = (m, score);
                     return MaxScore;
                 }
                 return nextMove;
             }
-            if (score <= nextMove[0].i)
+            if (score <= nextMove.i)
             {
-                List<(Move, int)> MaxScore = new List<(Move, int)> { (m, score) };
+                (Move, int) MaxScore = (m, score);
                 return MaxScore;
             }
             return nextMove;
