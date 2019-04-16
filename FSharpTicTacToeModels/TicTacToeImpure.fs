@@ -163,13 +163,13 @@ namespace QUT
                     let getTurn (game: GameState) = (game :> ITicTacToeGame<Player>).Turn
 
                     let gameOver (game: GameState) = 
-                        game.path.Length = pars.size * pars.size || game.Winner.IsSome
+                        game.IsDraw() || game.Winner.IsSome
 
                     let moveGenerator (game: GameState) = pars.squares |> List.except game.path |> Seq.ofList
 
                     let applyMove (game: GameState) (move: Move) = ApplyMove game move
 
-                    GameTheory.MiniMaxGenerator heuristic getTurn gameOver moveGenerator applyMove
+                    GameTheory.MiniMaxWithAlphaBetaPruningGenerator heuristic getTurn gameOver moveGenerator applyMove
                 
-                let move, _ = MiniMax game pars.evenPlayer 
+                let move, _ = MiniMax System.Int32.MinValue System.Int32.MaxValue game pars.evenPlayer 
                 move.Value
