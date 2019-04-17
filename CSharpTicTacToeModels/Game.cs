@@ -29,6 +29,23 @@ namespace QUT.CSharpTicTacToe
         {
             this.Turn = first;
             this.Size = size;
+            diag1 = new Move[size];
+            diag2 = new Move[size];
+            for (int i = 0; i < size; i++)
+            {
+                diag1[i] = new Move(i, i);
+                diag2[i] = new Move(i, (size - i - 1));
+            }
+            lines = new int[2 * size + 2];
+            squares = new List<Move>();
+            for (int row = 0; row < size; row++)
+            {
+                for (int col = 0; col < size; col++)
+                {
+                    squares.Add(new Move(row, col));
+                }
+            }
+            path = new List<Move>();
         }
 
         public bool IsDraw()

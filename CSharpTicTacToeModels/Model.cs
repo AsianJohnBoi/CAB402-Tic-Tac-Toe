@@ -35,11 +35,6 @@ namespace QUT.CSharpTicTacToe
             }
             new_game.winningSumEven = size * (size + 1) / 2;
             new_game.winningSumOdd = 100 * size * (size + 1) / 2;
-            for (int i = 0; i < size; i++)
-            {
-                new_game.diag1[i] = new Move(i, i);
-                new_game.diag2[i] = new Move(i, (size - i - 1));
-            }
             return new_game;
         }
 
@@ -202,15 +197,16 @@ namespace QUT.CSharpTicTacToe
 
         public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game)
         {
-            (Move m, Game g) = states[0];
-            (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, g, !isMax);
+            (Move m, Game g) theState = states[0];
+            (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, theState.g, !isMax);
             int score = move.i;
+            //Console.WriteLine("{0}, {1}, {2}, {3}", move, score, alpha, beta);
 
             int alpha1 = (isMax && score > alpha) ? score : alpha;
             int beta1 = (!isMax && score < beta) ? score : alpha;
             if (alpha1 >= beta1 || (states[states.Count - 1].m == null && (states[states.Count - 1].i == null)))
             {
-                (Move, int) alphaIsGreatOrEqual = (m, score);
+                (Move, int) alphaIsGreatOrEqual = (move.m, score);
                 return alphaIsGreatOrEqual;
             }
             //List<(Move, Game)> newState = new List<(Move, Game)> { states[states.Count - 1] };
@@ -219,14 +215,14 @@ namespace QUT.CSharpTicTacToe
             {
                 if (score >= nextMove.i)
                 {
-                    (Move, int)MaxScore = (m, score);
+                    (Move, int)MaxScore = (move.m, score);
                     return MaxScore;
                 }
                 return nextMove;
             }
             if (score <= nextMove.i)
             {
-                (Move, int) MaxScore = (m, score);
+                (Move, int) MaxScore = (move.m, score);
                 return MaxScore;
             }
             return nextMove;
