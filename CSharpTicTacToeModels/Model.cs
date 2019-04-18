@@ -43,7 +43,7 @@ namespace QUT.CSharpTicTacToe
             bool isMax = true;
             if (getTurn(game) == game.evenPlayer) { isMax = true; }
             else { isMax = false; }
-            (Move m, int i) best = MiniMaxWithAlphaBetaPruning(System.Int32.MinValue, System.Int32.MaxValue, game, isMax);
+            (Move m, int i) best = MiniMaxWithAlphaBetaPruning(-1, 1, game, isMax);
             return best.m;
         }
 

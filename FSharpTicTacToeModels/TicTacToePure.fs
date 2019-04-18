@@ -198,5 +198,5 @@ module FSharpPureTicTacToeModel =
 
                     GameTheory.MiniMaxWithAlphaBetaPruningGenerator heuristic getTurn gameOver moveGenerator applyMove
 
-            let move, _ = MiniMax System.Int32.MinValue System.Int32.MaxValue game game.evenPlayer
+            let move, _ = MiniMax -1 1 game game.evenPlayer
             move.Value

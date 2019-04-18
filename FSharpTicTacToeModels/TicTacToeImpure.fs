@@ -171,5 +171,5 @@ namespace QUT
 
                     GameTheory.MiniMaxWithAlphaBetaPruningGenerator heuristic getTurn gameOver moveGenerator applyMove
                 
-                let move, _ = MiniMax System.Int32.MinValue System.Int32.MaxValue game pars.evenPlayer 
+                let move, _ = MiniMax -1 1 game pars.evenPlayer 
                 move.Value
