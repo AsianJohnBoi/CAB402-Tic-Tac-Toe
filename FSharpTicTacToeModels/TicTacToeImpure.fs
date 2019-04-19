@@ -102,9 +102,9 @@ namespace QUT
                 | None -> TicTacToeOutcome<Player>.Undecided
                 | Some player -> TicTacToeOutcome<Player>.Win (player, winningSquares())
 
-        let ApplyMove game move  = 
+        let ApplyMove (game: GameState) (move: Move)  = 
             let l1 = game.lines |> Array.copy
-            let factor = if game.path.Length % 2 = 0 then 1 else -1
+            let factor = if game.path.Length % 2 = 0 then 1 else 100
             let rowLine = move.row
             let colLine = pars.size + move.col
             let isDiag1 = pars.diag1 |> Array.contains move
@@ -115,9 +115,25 @@ namespace QUT
             if isDiag2 then l1.[2 * pars.size + 1] <- l1.[2 * pars.size + 1] + factor * (move.row + 1)
             { game with path = move :: game.path; lines = l1 }
 
-        let CreateMove row col   = { row = row; col = col }
+        let CreateMove (row: int) (col: int) = { row = row; col = col }
 
-        let GameStart first size = GameState.Create size first
+        let GameStart (player: Player) (size: int) = 
+            pars <- 
+                { 
+                size = size
+                evenPlayer = player
+                oddPlayer = match player with | Cross -> Nought | Nought -> Cross 
+                squares = [
+                    for i in 0 .. (size - 1) do
+                        for j in 0 .. (size - 1) do
+                            yield { row = i; col = j }
+                ]
+                winningSumEven = size * (size + 1) / 2
+                winningSumOdd = 100 * size * (size + 1) / 2
+                diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
+                diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
+                }
+            GameState.Create size player
 
         [<AbstractClass>]
         type Model() =
@@ -125,25 +141,7 @@ namespace QUT
             interface ITicTacToeModel<GameState, Move, Player> with
                 member this.Cross with get()             = Cross 
                 member this.Nought with get()            = Nought 
-                member this.GameStart(firstPlayer, size) = 
-                    pars <- 
-                        { 
-                        size = size
-                        evenPlayer = firstPlayer
-                        oddPlayer = match firstPlayer with | Cross -> Nought | Nought -> Cross 
-                        squares = [
-                            for i in 0 .. (size - 1) do
-                                for j in 0 .. (size - 1) do
-                                    yield { row = i; col = j }
-                        ]
-                        winningSumEven = size * (size + 1) / 2
-                        winningSumOdd = 100 * size * (size + 1) / 2
-                        diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
-                        diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
-                        }
-                    GameState.Create size firstPlayer
-
-                //GameStart firstPlayer size
+                member this.GameStart(firstPlayer, size) = GameStart firstPlayer size
                 member this.CreateMove(row, col)         = CreateMove row col
                 member this.GameOutcome(game)            = GameOutcome game
                 member this.ApplyMove(game, move)        = ApplyMove game move 
@@ -155,7 +153,7 @@ namespace QUT
             override this.ToString()         = "Impure F# with Alpha Beta Pruning";
             override this.FindBestMove(game) = 
                 let MiniMax = 
-                    let heuristic (game: GameState) player = 
+                    let heuristic (game: GameState) (player: Player) = 
                         match game.Score player with
                         | Some n -> n
                         | _ -> raise(System.Exception("No Score"))

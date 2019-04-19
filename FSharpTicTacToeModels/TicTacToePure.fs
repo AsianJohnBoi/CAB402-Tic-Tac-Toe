@@ -43,7 +43,7 @@ module FSharpPureTicTacToeModel =
         member this.Score player = 
             match this.Winner with
             | Some pl -> Some(if pl = player then 1 else -1)
-            | _ ->  if this.IsDraw() then Some 0 else None //
+            | _ ->  if this.IsDraw() then Some 0 else None
 
         interface ITicTacToeGame<Player> with
             member this.Turn with get() = if this.path.Length % 2 = 0 then this.evenPlayer else this.oddPlayer
@@ -61,7 +61,7 @@ module FSharpPureTicTacToeModel =
                 | Some n -> if (this.path.Length - 1 - n) % 2 = 0 then piece this.evenPlayer else piece this.oddPlayer
 
 
-    let CreateMove row col = { row = row; col = col }
+    let CreateMove (row: int) (col: int) = { row = row; col = col }
 
     let ApplyMove (oldState:GameState) (move: Move) = 
         let l1 = oldState.lines |> Array.copy
@@ -104,11 +104,9 @@ module FSharpPureTicTacToeModel =
             }
         }
 
+    let GameOutcome (game: GameState) = 
     // Checks a single line (specified as a sequence of (row,column) coordinates) to determine if one of the players
     // has won by filling all of those squares, or a Draw if the line contains at least one Nought and one Cross
-    let CheckLine (game:GameState) (line:seq<int*int>) : TicTacToeOutcome<Player> = raise (System.NotImplementedException("CheckLine"))
-
-    let GameOutcome (game: GameState) = 
         let winningSquares() = 
             let winningLine = game.lines |> Array.findIndex (fun v -> v = game.winningSumEven || v = game.winningSumOdd)
             Lines game.size |> Seq.item winningLine 
@@ -119,9 +117,24 @@ module FSharpPureTicTacToeModel =
             match game.Winner with
             | None -> TicTacToeOutcome<Player>.Undecided
             | Some player -> TicTacToeOutcome<Player>.Win (player, winningSquares())
-
-
-    let MiniMaxWithPruning game = raise (System.NotImplementedException("MiniMaxWithPruning"))
+    
+    let GameStart (player: Player) (size: int) =
+        { 
+            path = [] 
+            lines = Array.create (2 * size + 2) 0
+            size = size
+            evenPlayer = player
+            oddPlayer = match player with | Cross -> Nought | Nought -> Cross 
+            squares = [
+                for i in 0 .. (size - 1) do
+                    for j in 0 .. (size - 1) do
+                        yield { row = i; col = j }
+            ]
+            winningSumEven = size * (size + 1) / 2 
+            winningSumOdd = 100 * size * (size + 1) / 2
+            diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
+            diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
+        }
 
     [<AbstractClass>]
     type Model() =
@@ -129,25 +142,7 @@ module FSharpPureTicTacToeModel =
         interface ITicTacToeModel<GameState, Move, Player> with
             member this.Cross with get()             = Cross 
             member this.Nought with get()            = Nought 
-            member this.GameStart(firstPlayer, size) = 
-                    { 
-                    path = [] 
-                    lines = Array.create (2 * size + 2) 0
-                    size = size
-                    evenPlayer = firstPlayer
-                    oddPlayer = match firstPlayer with | Cross -> Nought | Nought -> Cross 
-                    squares = [
-                        for i in 0 .. (size - 1) do
-                            for j in 0 .. (size - 1) do
-                                yield { row = i; col = j }
-                    ]
-                    winningSumEven = size * (size + 1) / 2 
-                    winningSumOdd = 100 * size * (size + 1) / 2
-                    diag1 = [| for i in 0 .. (size - 1) do yield { row = i; col = i } |]
-                    diag2 = [| for i in 0 .. (size - 1) do yield { row = i; col = size - i - 1} |]
-                    }
-                
-
+            member this.GameStart(firstPlayer, size) = GameStart firstPlayer size
             member this.CreateMove(row, col)         = CreateMove row col
             member this.GameOutcome(game)            = GameOutcome game
             member this.ApplyMove(game, move)        = ApplyMove game move 
