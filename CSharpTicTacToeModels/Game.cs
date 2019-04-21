@@ -17,8 +17,8 @@ namespace QUT.CSharpTicTacToe
         public Player evenPlayer;
         public Player oddPlayer;
         public List<Move> squares;
-        public int winningSumEven;
-        public int winningSumOdd;
+        private int winningSumEven;
+        private int winningSumOdd;
         public Move[] diag1;
         public Move[] diag2;
 
@@ -27,7 +27,8 @@ namespace QUT.CSharpTicTacToe
 
         public Game(Player first, int size)
         {
-            this.Turn = first;
+            evenPlayer = first;
+            this.Turn = evenPlayer;
             this.Size = size;
             diag1 = new Move[size];
             diag2 = new Move[size];
@@ -45,6 +46,8 @@ namespace QUT.CSharpTicTacToe
                     squares.Add(new Move(row, col));
                 }
             }
+            winningSumEven = size * (size + 1) / 2;
+            winningSumOdd = 100 * size * (size + 1) / 2;
             path = new List<Move>();
         }
 
