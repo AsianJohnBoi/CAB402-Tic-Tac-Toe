@@ -28,6 +28,7 @@ namespace QUT.CSharpTicTacToe
         public Game(Player first, int size)
         {
             evenPlayer = first;
+            if (evenPlayer == Player.Cross) oddPlayer = Player.Nought; else oddPlayer = Player.Cross;
             this.Turn = evenPlayer;
             this.Size = size;
             diag1 = new Move[size];
@@ -51,6 +52,24 @@ namespace QUT.CSharpTicTacToe
             path = new List<Move>();
         }
 
+        public Game(Game g)
+        {
+            this.evenPlayer = g.evenPlayer;
+            this.oddPlayer = g.oddPlayer;
+            this.Turn = this.evenPlayer;
+            this.Size = g.Size;
+            this.diag1 = new Move[g.diag1.Length];
+            Array.Copy(g.diag1, this.diag1, g.diag1.Length);
+            this.diag2 = new Move[g.diag2.Length];
+            Array.Copy(g.diag2, this.diag2, g.diag2.Length);
+            this.lines = new int[g.lines.Length];
+            Array.Copy(g.lines, this.lines, g.lines.Length);
+            this.squares = new List<Move>(g.squares);
+            this.winningSumEven = g.winningSumEven;
+            this.winningSumOdd = g.winningSumOdd;
+            this.path = new List<Move>(g.path);
+
+        }
         public bool IsDraw()
         {
             bool lineIsDraw(int sum)
@@ -60,7 +79,8 @@ namespace QUT.CSharpTicTacToe
             }
 
             bool linesChecker = true;
-            foreach (int i in lines){
+            foreach (int i in lines)
+            {
                 if (lineIsDraw(i) != true) { linesChecker = false; }
             }
             if (linesChecker) { return true; }
@@ -69,29 +89,34 @@ namespace QUT.CSharpTicTacToe
 
         public Player Winner()
         {
-            if (((IList<int>)lines).Contains(this.winningSumEven)){
+            if (((IList<int>)lines).Contains(this.winningSumEven))
+            {
                 return evenPlayer;
             }
             else if (((IList<int>)lines).Contains(this.winningSumOdd))
             {
                 return oddPlayer;
             }
-            return 0;
+            return Player.No;
         }
 
         public int Score(Player player)
         {
-            if (this.IsDraw())
+            var winner = this.Winner();
+            if (winner == Player.No)
             {
-                return +0;
+                if (this.IsDraw())
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                if (player == winner) return 1;
+                else return -1;
             }
 
-            if (player == evenPlayer) { return +1; }
-            else if (player == oddPlayer)
-            {
-                return +1;
-            }
-            return +0;
+            throw new Exception("No Score");
         }
 
         public int TheSize
@@ -110,6 +135,21 @@ namespace QUT.CSharpTicTacToe
             set { this.Turn = value; }
         }
 
+        //public string getPiece(int row, int col)
+        //{
+        //    String piece(Player player)
+        //    {
+        //        if (player == Player.Cross) { return "X"; }
+        //        else if (player == Player.Nought) { return "O"; }
+        //        return null;
+        //    }
+        //    //find index that matches the row and column in the list path
+        //    int n = this.path.FindIndex(a => a.Row == row); //Only uses row
+        //    if (n == 0) { return ""; }
+        //    else if ((this.path.Count - 1 - n) % 2 == 0) { piece(evenPlayer); }
+        //    else { piece(oddPlayer); }
+        //    return null;
+        //}
         public string getPiece(int row, int col)
         {
             String piece(Player player)
@@ -118,12 +158,10 @@ namespace QUT.CSharpTicTacToe
                 else if (player == Player.Nought) { return "O"; }
                 return null;
             }
-            //find index that matches the row and column in the list path
-            int n = this.path.FindIndex(a => a.Row == row); //Only uses row
-            if (n == 0) { return ""; }
-            else if ((this.path.Count - 1 - n) % 2 == 0) { piece(evenPlayer); }
-            else { piece(oddPlayer); }
-            return null;
+            int n = this.path.FindIndex(a => a.Row == row && a.Col == col);
+            if (n == -1) { return ""; }
+            else if (n % 2 == 0) { return piece(evenPlayer); }
+            else { return piece(oddPlayer); }
         }
 
     }

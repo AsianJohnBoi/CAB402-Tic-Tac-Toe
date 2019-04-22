@@ -5,6 +5,7 @@
     /// </summary>
     public enum Player
     {
+        No,
         Nought,
         Cross,
     }
