@@ -44,23 +44,6 @@ namespace QUT.CSharpTicTacToe
             return nextMove;
         }
 
-        //public Game ApplyMove(Game game, Move move)
-        //{
-        //    Game nextState = game;
-        //    int[] l1 = nextState.lines;
-        //    int factor = (nextState.path.Count % 2 == 0) ? 1 : 100;
-        //    int rowLine = move.Row;
-        //    int colLine = nextState.Size + move.Col;
-        //    bool isDiag1 = Array.Exists(nextState.diag1, element => element == move);
-        //    bool isDiag2 = Array.Exists(nextState.diag2, element => element == move);
-        //    l1[rowLine] = (l1[rowLine] + factor * (move.Col + 1));
-        //    l1[colLine] = (l1[colLine] + factor * (move.Row + 1));
-        //    if (isDiag1) { l1[2 * nextState.Size] = l1[2 * nextState.Size] + factor * (move.Col + 1); }
-        //    if (isDiag2) { l1[2 * nextState.Size + 1] = l1[2 * nextState.Size + 1] + factor * (move.Col + 1); }
-        //    nextState.path.Add(move);
-        //    nextState.lines = l1;
-        //    return nextState;
-        //}
         public Game ApplyMove(Game game, Move move)
         {
             //Game nextState = game;
@@ -74,37 +57,12 @@ namespace QUT.CSharpTicTacToe
             l1[rowLine] = (l1[rowLine] + factor * (move.Col + 1));
             l1[colLine] = (l1[colLine] + factor * (move.Row + 1));
             if (isDiag1) { l1[2 * nextState.Size] = l1[2 * nextState.Size] + factor * (move.Col + 1); }
-            //if (isDiag2) { l1[2 * nextState.Size + 1] = l1[2 * nextState.Size + 1] + factor * (move.Col + 1); }
             if (isDiag2) { l1[2 * nextState.Size + 1] = l1[2 * nextState.Size + 1] + factor * (move.Row + 1); }
             var square = game.squares.Find(sq => sq.Col == move.Col && sq.Row == move.Row);
             nextState.path.Add(square);
-            //nextState.lines = l1;
             return nextState;
         }
 
-        //public TicTacToeOutcome<Player> GameOutcome(Game game)
-        //{
-        //    List<(int, int)> winningSquares()
-        //    {
-
-        //        throw new System.NotImplementedException("GameOutcome");
-        //    }
-
-        //    if (game.IsDraw()) { TicTacToeOutcome<Player> Draw; }
-        //    else
-        //    {
-        //        if (game.Winner() == Nought)
-        //        {
-        //            TicTacToeOutcome<Player> Win;
-        //        }
-        //        else if (game.Winner() == Cross)
-        //        {
-        //            TicTacToeOutcome<Player> Win;
-        //        }
-        //    }
-        //    return (TicTacToeOutcome<Player>.Undecided);
-
-        //}
         public TicTacToeOutcome<Player> GameOutcome(Game game)
         {
 
@@ -174,22 +132,11 @@ namespace QUT.CSharpTicTacToe
             return winningLines;
         }
 
-        //public int heuristic(Game game, Player player)
-        //{
-        //    int score = game.Score(player);
-        //    if (score > 0) { return score; }
-        //    return 0;
-        //}
-
         public int heuristic(Game game, Player player)
         {
             return game.Score(player);
         }
 
-        //public Player getTurn(Game game)
-        //{
-        //    return game.Turn;
-        //}
         public Player getTurn(Game game)
         {
             return game.WhosTurn;
@@ -239,34 +186,6 @@ namespace QUT.CSharpTicTacToe
             return finalMove;
         }
 
-        //public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game)
-        //{
-        //    (Move m, Game g) theState = states[0];
-        //    (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, theState.g, !isMax);
-        //    int score = move.i;
-
-        //    int alpha1 = (isMax && score > alpha) ? score : alpha;
-        //    int beta1 = (!isMax && score < beta) ? score : alpha;
-        //    if (alpha1 >= beta1 || (states[states.Count - 1].m == null && (states[states.Count - 1].i == null)))
-        //    {
-        //        return (move.m, score);
-        //    }
-
-        //    (Move m, int i) nextMove = mapScoresPrunned(alpha, beta, states, moves, isMax, game);
-        //    if (isMax)
-        //    {
-        //        if (score >= nextMove.i)
-        //        {
-        //            return (move.m, score);
-        //        }
-        //        return nextMove;
-        //    }
-        //    if (score <= nextMove.i)
-        //    {
-        //        return (move.m, score);
-        //    }
-        //    return nextMove;
-        //}
         public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game, Player perspective)
         {
             (Move m, Game g) theState = states[0];
