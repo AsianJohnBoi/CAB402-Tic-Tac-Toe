@@ -51,29 +51,29 @@ namespace QUT
                     NodeCounter.Increment()
                     if gameOver game then None, (heuristic game perspective) //player's final score
                     else 
-                        let moves = moveGenerator game //finds moves, returns a sequence
+                        let moves = moveGenerator game //Sequence of empty spaces on the board
                         if Seq.isEmpty moves then
                             None, 0 
                         else
                             let nextGameStates = 
                                 moves
-                                |> Seq.map (fun m -> m, applyMove game m) //creates a new sequence of elements with applied function
+                                |> Seq.map (fun m -> m, applyMove game m) //Add next game states with applied moves
 
                             let rec mapScoresPrunned alpha beta (states: seq<'Move * 'Game>) : Option<'Move> * int = 
                                 let m, g = Seq.head states
-                                let move = EstablishScore alpha beta g (not isMax)
-                                let score = snd move
+                                let move = EstablishScore alpha beta g (not isMax) //recursive call
+                                let score = snd move //The score of the move
 
-                                let alpha' = if isMax && score > alpha then score else alpha
-                                let beta' = if not isMax && score < beta then score else beta
-                                if alpha' >= beta' || Seq.isEmpty (Seq.tail states) then
-                                    Some m, score
+                                let alpha' = if isMax && score > alpha then score else alpha //Comparison of current player (if max) && score
+                                let beta' = if not isMax && score < beta then score else beta //Comparison of current player (if not max) && score
+                                if alpha' >= beta' || Seq.isEmpty (Seq.tail states) then  //If the value of alpha1 is greater than or equal to beta or there's only one state in the given sequence
+                                    Some m, score //returns the final move and its score
                                 else
-                                    let nextMove = mapScoresPrunned alpha' beta' (Seq.tail states)
+                                    let nextMove = mapScoresPrunned alpha' beta' (Seq.tail states) //runs function again with the last value of states sequence
                                     if isMax then
-                                        if score >= snd nextMove then Some m, score else nextMove
+                                        if score >= snd nextMove then Some m, score else nextMove //returns the best move for the max player
                                     else
-                                        if score <= snd nextMove then Some m, score else nextMove
+                                        if score <= snd nextMove then Some m, score else nextMove //returns the best move for the min player
 
                             mapScoresPrunned alpha beta nextGameStates
 

@@ -216,19 +216,19 @@ namespace QUT.CSharpTicTacToe
             else
             {
                 List<Move> moves = moveGenerator(game);
-                if (moves.Count == 0)
+                if (moves.Count == 0) //board is full
                 {
                     (Move, int) noMoves = (null, 0);
                     return noMoves;
                 }
 
-                List<(Move m, Game i)> nextGameStates = new List<(Move, Game)>();
+                List<(Move m, Game i)> nextGameStates = new List<(Move, Game)>(); //New list for the next game states
                 foreach (Move i in moves)
                 {
-                    nextGameStates.Add((i, ApplyMove(game, i)));
+                    nextGameStates.Add((i, ApplyMove(game, i))); //Add next game states with applied moves
                 }
 
-                finalMove = mapScoresPrunned(alpha, beta, nextGameStates, moves, isMax, game, game.evenPlayer);
+                finalMove = mapScoresPrunned(alpha, beta, nextGameStates, moves, isMax, game, game.evenPlayer); //Calls for applied pruning
             }
             return finalMove;
         }
@@ -246,30 +246,30 @@ namespace QUT.CSharpTicTacToe
         /// <returns>The best move for the player (row, column)</returns>
         public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game, Player perspective)
         {
-            (Move m, Game g) theState = states[0];
-            (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, theState.g, !isMax, perspective);
-            int score = move.i;
+            (Move m, Game g) theState = states[0]; //Get's the first value of the first state in list
+            (Move m, int i) move = MiniMaxWithAlphaBetaPruning(alpha, beta, theState.g, !isMax, perspective); //recursive call
+            int score = move.i; //The score of the move
 
-            int alpha1 = (isMax && score > alpha) ? score : alpha;
-            int beta1 = (!isMax && score < beta) ? score : beta;
-            if (alpha1 >= beta1 || states.Count == 1)
+            int alpha1 = (isMax && score > alpha) ? score : alpha; //Comparison of current player (if max) && score
+            int beta1 = (!isMax && score < beta) ? score : beta; //Comparison of current player (if not max) && score
+            if (alpha1 >= beta1 || states.Count == 1) //If the value of alpha1 is greate than or equal to beta or there's only one state in the given list
             {
-                return (theState.m, score);
+                return (theState.m, score); //returns the final move and its score
             }
 
-            var tail = new List<(Move m, Game i)>(states.Skip(1));
-            (Move m, int i) nextMove = mapScoresPrunned(alpha, beta, tail, moves, isMax, game, perspective);
+            var tail = new List<(Move m, Game i)>(states.Skip(1)); //creates list with state lists' values without the first two states
+            (Move m, int i) nextMove = mapScoresPrunned(alpha, beta, tail, moves, isMax, game, perspective); //runs function again with new states
             if (isMax)
             {
                 if (score >= nextMove.i)
                 {
-                    return (theState.m, score);
+                    return (theState.m, score); //returns the best move for the max player
                 }
                 return nextMove;
             }
             if (score <= nextMove.i)
             {
-                return (theState.m, score);
+                return (theState.m, score); //returns the best move for the min player
             }
             return nextMove;
         }
