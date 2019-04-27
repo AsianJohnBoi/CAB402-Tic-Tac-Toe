@@ -2,8 +2,10 @@ namespace QUT
 
     module FSharpImpureTicTacToeModel =
     
+        // type to represent the two players: Noughts and Crosses
         type Player = Nought | Cross
 
+        // type to represent a single move specified using (row, column) coordinates of the selected square
         type Move = 
             { 
                 row: int
@@ -13,6 +15,7 @@ namespace QUT
                 member this.Row with get() = this.row
                 member this.Col with get() = this.col
 
+        // type to represent a new game with size board, who's odd or even player, winning moves.
         type private GameStart = 
             {
                 size: int
@@ -27,6 +30,7 @@ namespace QUT
 
         let mutable private pars = Unchecked.defaultof<GameStart>
 
+        // type to represent the current state of the game, including the size of the game (NxN), who's turn it is and the pieces on the board
         type GameState = 
             { 
                 path: Move list
@@ -67,7 +71,12 @@ namespace QUT
                     match this.path |> List.tryFindIndex ((=) {row = row; col = col}) with
                     | None -> ""
                     | Some n -> if (this.path.Length - 1 - n) % 2 = 0 then piece pars.evenPlayer else piece pars.oddPlayer
-
+        
+        // Returns a sequence containing all of the lines on the board: Horizontal, Vertical and Diagonal
+        // The number of lines returned should always be (size*2+2)
+        // the number of squares in each line (represented by (row,column) coordinates) should always be equal to size
+        // For example, if the input size = 2, then the output would be: 
+        //     seq [seq[(0,0);(0,1)];seq[(1,0);(1,1)];seq[(0,0);(1,0)];seq[(0,1);(1,1)];seq[(0,0);(1,1)];seq[(0,1);(1,0)]]
         let Lines (size:int) : seq<seq<int*int>> = 
             seq  {
                 for i in 0 .. (size - 1) do
@@ -89,7 +98,9 @@ namespace QUT
                         yield (i, size - i - 1)
                 }
             }
-
+        
+        // Checks a single line (specified as a sequence of (row,column) coordinates) to determine if one of the players
+        // has won by filling all of those squares, or a Draw if the line contains at least one Nought and one Cross
         let GameOutcome (game: GameState) = 
             let winningSquares() = 
                 let winningLine = game.lines |> Array.findIndex (fun v -> v = pars.winningSumEven || v = pars.winningSumOdd)

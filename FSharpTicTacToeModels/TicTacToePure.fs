@@ -60,7 +60,6 @@ module FSharpPureTicTacToeModel =
                 | None -> ""
                 | Some n -> if (this.path.Length - 1 - n) % 2 = 0 then piece this.evenPlayer else piece this.oddPlayer
 
-
     let CreateMove (row: int) (col: int) = { row = row; col = col }
 
     let ApplyMove (oldState:GameState) (move: Move) = 
@@ -81,7 +80,6 @@ module FSharpPureTicTacToeModel =
     // the number of squares in each line (represented by (row,column) coordinates) should always be equal to size
     // For example, if the input size = 2, then the output would be: 
     //     seq [seq[(0,0);(0,1)];seq[(1,0);(1,1)];seq[(0,0);(1,0)];seq[(0,1);(1,1)];seq[(0,0);(1,1)];seq[(0,1);(1,0)]]
-    // The order of the lines and the order of the squares within each line does not matter
     let Lines (size:int) : seq<seq<int*int>> = 
         seq  {
             for i in 0 .. (size - 1) do
@@ -104,9 +102,9 @@ module FSharpPureTicTacToeModel =
             }
         }
 
-    let GameOutcome (game: GameState) = 
     // Checks a single line (specified as a sequence of (row,column) coordinates) to determine if one of the players
     // has won by filling all of those squares, or a Draw if the line contains at least one Nought and one Cross
+    let GameOutcome (game: GameState) = 
         let winningSquares() = 
             let winningLine = game.lines |> Array.findIndex (fun v -> v = game.winningSumEven || v = game.winningSumOdd)
             Lines game.size |> Seq.item winningLine 
@@ -118,6 +116,7 @@ module FSharpPureTicTacToeModel =
             | None -> TicTacToeOutcome<Player>.Undecided
             | Some player -> TicTacToeOutcome<Player>.Win (player, winningSquares())
     
+
     let GameStart (player: Player) (size: int) =
         { 
             path = [] 

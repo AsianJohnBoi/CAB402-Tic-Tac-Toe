@@ -3,11 +3,6 @@ using System;
 
 namespace QUT.CSharpTicTacToe
 {
-    /// <summary>
-    /// This represents the current state of the game, 
-    /// including the size of the game (NxN), 
-    /// who's turn it is and the pieces on the board
-    /// </summary>    
     public class Game : ITicTacToeGame<Player>
     {
         public int Size;
@@ -25,6 +20,13 @@ namespace QUT.CSharpTicTacToe
         int ITicTacToeGame<Player>.Size => this.Size;
         Player ITicTacToeGame<Player>.Turn => (this.path.Count % 2 == 0) ? evenPlayer : oddPlayer;
 
+        /// <summary>
+        /// Constructor for the game. Inititates game variables for a new game.
+        /// Setting the size, who's min (odd) or max (even) and the winning
+        /// moves for the game.
+        /// </summary>
+        /// <param name="first">The first player set as the even Player (max player)</param>
+        /// <param name="size">The board size of the game</param>
         public Game(Player first, int size)
         {
             evenPlayer = first;
@@ -52,6 +54,10 @@ namespace QUT.CSharpTicTacToe
             path = new List<Move>();
         }
 
+        /// <summary>
+        /// Used when applying a new move to the game, making sure values are consistent.
+        /// </summary>
+        /// <param name="g">The current game played</param>
         public Game(Game g)
         {
             this.evenPlayer = g.evenPlayer;
@@ -68,8 +74,12 @@ namespace QUT.CSharpTicTacToe
             this.winningSumEven = g.winningSumEven;
             this.winningSumOdd = g.winningSumOdd;
             this.path = new List<Move>(g.path);
-
         }
+
+        /// <summary>
+        /// Checks if the current game has ended in a draw
+        /// </summary>
+        /// <returns></returns>
         public bool IsDraw()
         {
             bool lineIsDraw(int sum)
@@ -87,6 +97,10 @@ namespace QUT.CSharpTicTacToe
             return false;
         }
 
+        /// <summary>
+        /// Checks the winner of the current game.
+        /// </summary>
+        /// <returns></returns>
         public Player Winner()
         {
             if (((IList<int>)lines).Contains(this.winningSumEven))
@@ -100,6 +114,11 @@ namespace QUT.CSharpTicTacToe
             return Player.No;
         }
 
+        /// <summary>
+        /// Obtains the score of the winning player.
+        /// </summary>
+        /// <param name="player">The player who potentially won the game</param>
+        /// <returns></returns>
         public int Score(Player player)
         {
             var winner = this.Winner();
@@ -119,11 +138,17 @@ namespace QUT.CSharpTicTacToe
             throw new Exception("No Score");
         }
 
+        /// <summary>
+        /// Returns the current size of the game.
+        /// </summary>
         public int TheSize
         {
             get { return this.Size; }
         }
 
+        /// <summary>
+        /// Get and set's the current player's turn
+        /// </summary>
         public Player WhosTurn
         {
             get
@@ -135,21 +160,13 @@ namespace QUT.CSharpTicTacToe
             set { this.Turn = value; }
         }
 
-        //public string getPiece(int row, int col)
-        //{
-        //    String piece(Player player)
-        //    {
-        //        if (player == Player.Cross) { return "X"; }
-        //        else if (player == Player.Nought) { return "O"; }
-        //        return null;
-        //    }
-        //    //find index that matches the row and column in the list path
-        //    int n = this.path.FindIndex(a => a.Row == row); //Only uses row
-        //    if (n == 0) { return ""; }
-        //    else if ((this.path.Count - 1 - n) % 2 == 0) { piece(evenPlayer); }
-        //    else { piece(oddPlayer); }
-        //    return null;
-        //}
+        /// <summary>
+        /// Obtains the player's piece ('X' or 'O') on the game board and 
+        /// returns the string "X" or "O"
+        /// </summary>
+        /// <param name="row">Row where the player's piece is located</param>
+        /// <param name="col">Column where the player's piece is located</param>
+        /// <returns></returns>
         public string getPiece(int row, int col)
         {
             String piece(Player player)

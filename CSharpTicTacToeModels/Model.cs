@@ -18,6 +18,12 @@ namespace QUT.CSharpTicTacToe
             return "Impure C# with Alpha Beta Pruning";
         }
 
+        /// <summary>
+        /// Starts a new game of TicTacToe.
+        /// </summary>
+        /// <param name="first">The player Nought or Cross to start the game. Will be max player.</param>
+        /// <param name="size">The size of the board game.</param>
+        /// <returns>A brand new game</returns>
         public Game GameStart(Player first, int size)
         {
             Game new_game = new Game(first, size);
@@ -26,16 +32,27 @@ namespace QUT.CSharpTicTacToe
             return new_game;
         }
 
+        /// <summary>
+        /// Finds the best move (x, y) for the current player (min or max).
+        /// </summary>
+        /// <param name="game">The current game being played</param>
+        /// <returns>The best move (row, column)</returns>
         public Move FindBestMove(Game game)
         {
             bool isMax = true;
-            if (getTurn(game) == game.evenPlayer) { isMax = true; }
+            if (game.WhosTurn == game.evenPlayer) { isMax = true; }
             else { isMax = false; }
             NodeCounter.Reset();
             (Move m, int i) best = MiniMaxWithAlphaBetaPruning(-1, 1, game, isMax, game.evenPlayer);
             return best.m;
         }
 
+        /// <summary>
+        /// Finds a coordinate move for the player.
+        /// </summary>
+        /// <param name="row">Row for the piece to be placed</param>
+        /// <param name="col">Column for the piece to be placed</param>
+        /// <returns>Move coordinates (row, column) </returns>
         public Move CreateMove(int row, int col)
         {
             this.row = row;
@@ -44,9 +61,14 @@ namespace QUT.CSharpTicTacToe
             return nextMove;
         }
 
+        /// <summary>
+        /// Applies the move for the player in the current game.
+        /// </summary>
+        /// <param name="game">The current game</param>
+        /// <param name="move">Coordinate for the player's piece to be placed </param>
+        /// <returns>A new game with the applied move on the board.</returns>
         public Game ApplyMove(Game game, Move move)
         {
-            //Game nextState = game;
             Game nextState = new Game(game);
             int[] l1 = nextState.lines;
             int factor = (nextState.path.Count % 2 == 0) ? 1 : 100;
@@ -63,6 +85,12 @@ namespace QUT.CSharpTicTacToe
             return nextState;
         }
 
+        /// <summary>
+        /// Finds the outcome of the game whether it is a draw
+        /// or a player has won.
+        /// </summary>
+        /// <param name="game">The current game</param>
+        /// <returns>Player that won the game or Draw</returns>
         public TicTacToeOutcome<Player> GameOutcome(Game game)
         {
 
@@ -87,6 +115,16 @@ namespace QUT.CSharpTicTacToe
             return (TicTacToeOutcome<Player>.Undecided);
 
         }
+
+        /// <summary>
+        /// Returns a sequence containing all of the lines on the board: Horizontal, Vertical and Diagonal
+        /// The number of lines returned should always be (size*2+2)
+        /// the number of squares in each line (represented by (row,column) coordinates) should always be equal to size
+        /// For example, if the input size = 2, then the output would be: 
+        /// seq [seq[(0,0);(0,1)];seq[(1,0);(1,1)];seq[(0,0);(1,0)];seq[(0,1);(1,1)];seq[(0,0);(1,1)];seq[(0,1);(1,0)]]
+        /// </summary>
+        /// <param name="size">Size of the current board</param>
+        /// <returns>The list of lists of winning lines</returns>
         public List<List<(int, int)>> Lines(int size)
         {
             List<List<(int, int)>> winningLines = new List<List<(int, int)>>();
@@ -98,7 +136,7 @@ namespace QUT.CSharpTicTacToe
                 for (int j = 0; j < size; j++)
                 {
                     coordinates.Add((i, j));
-                    winningLines.Add(coordinates);//add the list to winningLines list
+                    winningLines.Add(coordinates); //add the list to winningLines list
                     coordinates.Clear(); //flush the coordinates list
                 }
             }
@@ -132,22 +170,22 @@ namespace QUT.CSharpTicTacToe
             return winningLines;
         }
 
-        public int heuristic(Game game, Player player)
-        {
-            return game.Score(player);
-        }
-
-        public Player getTurn(Game game)
-        {
-            return game.WhosTurn;
-        }
-
+        /// <summary>
+        /// Checks if the current game ends up as a draw or has a winner
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>True if game is over. False if not</returns>
         public bool gameOver(Game game)
         {
             if (game.IsDraw() || (game.Winner() != Player.No)) { return true; }
             return false;
         }
 
+        /// <summary>
+        /// Generates a list of moves for the current game.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns>List of moves</returns>
         public List<Move> moveGenerator(Game game)
         {
             List<Move> moves = new List<Move>();
@@ -158,13 +196,22 @@ namespace QUT.CSharpTicTacToe
             return moves;
         }
 
+        /// <summary>
+        /// Finds the best move (min or max) for the current player of the game.
+        /// </summary>
+        /// <param name="alpha">The lowest possible score of the node</param>
+        /// <param name="beta">The highest possible score of the node</param>
+        /// <param name="game">The current game</param>
+        /// <param name="isMax">If the current player is the maximum player</param>
+        /// <param name="perspective">The current player's turn</param>
+        /// <returns>The best move for the player (row, column)</returns>
         public (Move, int) MiniMaxWithAlphaBetaPruning(int alpha, int beta, Game game, bool isMax, Player perspective)
         {
             NodeCounter.Increment();
             (Move, int) finalMove;
             if (gameOver(game))
             {
-                return (null, heuristic(game, perspective));
+                return (null, (game.Score(perspective)));
             }
             else
             {
@@ -186,6 +233,17 @@ namespace QUT.CSharpTicTacToe
             return finalMove;
         }
 
+        /// <summary>
+        /// Finds the best move (min or max) for the current player with applied pruning.
+        /// </summary>
+        /// <param name="alpha">The lowest possible score of the node</param>
+        /// <param name="beta">The highest possible score of the node</param>
+        /// <param name="states"></param>
+        /// <param name="moves">Possible moves for the player</param>
+        /// <param name="isMax">If the current player is the maximum player</param>
+        /// <param name="game">The current game</param>
+        /// <param name="perspective">The current player's turn</param>
+        /// <returns>The best move for the player (row, column)</returns>
         public (Move, int) mapScoresPrunned(int alpha, int beta, List<(Move m, Game i)> states, List<Move> moves, bool isMax, Game game, Player perspective)
         {
             (Move m, Game g) theState = states[0];
